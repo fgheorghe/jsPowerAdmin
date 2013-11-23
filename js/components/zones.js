@@ -75,9 +75,44 @@ zones.prototype.createPanel = function() {
         // Create main panel
         this.panel = Ext.create( 'Ext.Panel', {
                 title: 'Zones'
+                ,tbar: this.createZonesToolbar()
                 ,layout: 'fit'
                 ,items: this.zoneGridPanel
         } );
 
         return this.panel;
 }
+
+/**
+ * Method used for creating the zones top toolbar.
+ * @function
+ * @return {Object} Ext.toolbar.Toolbar object.
+ */
+zones.prototype.createZonesToolbar = function() {
+        // Create toolbar
+        // TODO: Add functionality
+        this.zonesToolbar = Ext.create( 'Ext.toolbar.Toolbar', {
+                items: [
+                        {
+                                text: 'View zone'
+                        }
+                        ,'-'
+                        ,{
+                                text: 'Add master zone'
+                        }
+                        ,{
+                                text: 'Add slave zone'
+                        }
+                        ,'-'
+                        ,{
+                                text: 'Edit Zone'
+                        }
+                        ,'-'
+                        ,{
+                                text: 'Delete Zone'
+                        }
+                ]
+        } );
+
+        return this.zonesToolbar;
+} 
