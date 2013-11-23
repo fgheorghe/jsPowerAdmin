@@ -57,6 +57,8 @@ jsPowerAdmin.prototype.createMenuPanel = function() {
                 region: 'west'
                 ,title: 'Menu'
                 ,width: 150
+                ,split: true
+                ,collapsible: true
         } );
 
         return this.menuPanel;
