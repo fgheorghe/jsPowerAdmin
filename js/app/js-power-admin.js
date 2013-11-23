@@ -55,13 +55,43 @@ jsPowerAdmin.prototype.createMenuPanel = function() {
         // Create panel
         this.menuPanel = Ext.create( 'Ext.Panel', {
                 region: 'west'
+                ,layout: 'fit'
                 ,title: 'Menu'
                 ,width: 150
                 ,split: true
                 ,collapsible: true
+                ,items: this.createMenuTree()
         } );
 
         return this.menuPanel;
+}
+
+/**
+ * Method used for creating the menu tree panel.
+ * @function
+ * @return {Object} Ext.tree.Panel object.
+ */
+jsPowerAdmin.prototype.createMenuTree = function() {
+        // Create menu store
+        this.menuStore = Ext.create( 'Ext.data.TreeStore', {
+                root: {
+                        expanded: true
+                        ,children: [
+                                // TODO: Add menu items.
+                                { text: "Stub", leaf: true }
+                        ]
+                }
+        } );
+
+        // Create the panel
+        this.menuTreePanel = Ext.create( 'Ext.tree.Panel', {
+                store: this.menuStore
+                ,border: false
+                ,frame: false
+                ,rootVisible: false
+        } );
+
+        return this.menuTreePanel;
 }
 
 // Instantiate application, once ExtJS is ready
