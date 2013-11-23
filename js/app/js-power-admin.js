@@ -13,6 +13,9 @@ var jsPowerAdmin = function() {
  * @function
  */
 jsPowerAdmin.prototype.init = function() {
+        // Prepare the 'Zones' component
+        this.zones = new zones();
+
         // Prepare main user interface
         this.createMainView();
 }
@@ -35,12 +38,16 @@ jsPowerAdmin.prototype.createMainView = function() {
 /**
  * Method used for creating the center panel.
  * @function
- * @return {Object} Ext.Panel object.
+ * @return {Object} Ext.tab.Panel object.
  */
 jsPowerAdmin.prototype.createCenterPanel = function() {
         // Create panel
-        this.centerPanel = Ext.create( 'Ext.Panel', {
+        this.centerPanel = Ext.create( 'Ext.tab.Panel', {
                 region: 'center'
+                ,layout: 'accordion'
+                ,items: [
+                        this.zones.panel
+                ]
         } );
 
         return this.centerPanel;
@@ -88,7 +95,7 @@ jsPowerAdmin.prototype.createMenuTree = function() {
                                 {
                                         text: "View Zones"
                                         ,leaf: true
-                                        ,component: 'zones'
+                                        ,component: this.zones
                                 }
                         ]
                 }
