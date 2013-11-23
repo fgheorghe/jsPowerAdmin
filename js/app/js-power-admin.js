@@ -67,6 +67,14 @@ jsPowerAdmin.prototype.createMenuPanel = function() {
 }
 
 /**
+ * Method used for handling menu item click events.
+ * @function
+ */
+jsPowerAdmin.prototype.menuItemClick = function( menuTreePanel, record, item, index, e, eOpts ) {
+        // TODO: Implement.
+}
+
+/**
  * Method used for creating the menu tree panel.
  * @function
  * @return {Object} Ext.tree.Panel object.
@@ -77,8 +85,11 @@ jsPowerAdmin.prototype.createMenuTree = function() {
                 root: {
                         expanded: true
                         ,children: [
-                                // TODO: Add menu items.
-                                { text: "Stub", leaf: true }
+                                {
+                                        text: "View Zones"
+                                        ,leaf: true
+                                        ,component: 'zones'
+                                }
                         ]
                 }
         } );
@@ -89,6 +100,9 @@ jsPowerAdmin.prototype.createMenuTree = function() {
                 ,border: false
                 ,frame: false
                 ,rootVisible: false
+                ,listeners: {
+                        itemclick: this.menuItemClick.bind( this )
+                }
         } );
 
         return this.menuTreePanel;
