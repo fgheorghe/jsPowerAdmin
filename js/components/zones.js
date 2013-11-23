@@ -94,7 +94,7 @@ zones.prototype.createZonesToolbar = function() {
         this.zonesToolbar = Ext.create( 'Ext.toolbar.Toolbar', {
                 items: [
                         {
-                                text: 'View or edit zone'
+                                text: 'Edit zone'
                         }
                         ,'-'
                         ,{
