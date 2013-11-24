@@ -159,6 +159,7 @@ zones.prototype.createZoneRecordGrid = function() {
         this.zoneRecordGridPanel = Ext.create( 'Ext.grid.Panel', {
                 store: this.zoneRecordStore
                 ,plugins: [ this.zoneRecordEditingPlugin ]
+                ,tbar: this.createZoneRecordsToolbar()
                 ,columns: [
                         { text: 'Name',  dataIndex: 'name', editor: 'textfield' }
                         ,{ text: 'Type', dataIndex: 'type', editor: this.recordTypeCombo }
@@ -204,9 +205,42 @@ zones.prototype.createZoneWindow = function() {
                 ,height: 400
                 ,width: 600
                 ,items: this.zoneRecordGridPanel
+                ,bbar: Ext.create( 'Ext.toolbar.Toolbar', {
+                        items: [
+                                '->'
+                                ,{
+                                        text: 'Commit'
+                                }
+                                ,{
+                                        text: 'Close'
+                                }
+                        ]
+                } )
         } );
 
         return this.zoneWindow;
+}
+
+/**
+ * Method used for creating the zone records top toolbar.
+ * @function
+ * @return {Object} Ext.toolbar.Toolbar object.
+ */
+zones.prototype.createZoneRecordsToolbar = function() {
+        // Create toolbar
+        // TODO: Add functionality
+        this.zoneRecordsToolbar = Ext.create( 'Ext.toolbar.Toolbar', {
+                items: [
+                        ,{
+                                text: 'Add record'
+                        }
+                        ,{
+                                text: 'Delete record'
+                        }
+                ]
+        } );
+
+        return this.zoneRecordsToolbar;
 }
 
 /**
