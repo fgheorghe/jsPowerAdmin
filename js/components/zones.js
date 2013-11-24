@@ -51,7 +51,7 @@ zones.prototype.createZoneGridPanel = function() {
 
         // Create grid panel
         // TODO: Add remote sorting.
-        this.zoneGridPanel = Ext.create('Ext.grid.Panel', {
+        this.zoneGridPanel = Ext.create( 'Ext.grid.Panel', {
                 store: this.zoneStore
                 ,columns: [
                         { text: 'Name',  dataIndex: 'name', flex: 1 }
@@ -59,9 +59,7 @@ zones.prototype.createZoneGridPanel = function() {
                         ,{ text: 'Records', dataIndex: 'records' }
                         // TODO: Add owner column.
                 ]
-                ,height: 200
-                ,width: 400
-        });
+        } );
 
         return this.zoneGridPanel;
 }
@@ -84,6 +82,134 @@ zones.prototype.createPanel = function() {
 }
 
 /**
+ * Method used for creating the zone record grid.
+ * @function
+ * @return {Object} Ext.grid.Panel object.
+ */
+zones.prototype.createZoneRecordGrid = function() {
+        // Create store
+        // TODO: Add remote JSON store.
+        // NOTE: Stub.
+        this.zoneRecordStore = Ext.create( 'Ext.data.Store', {
+                fields: [
+                        { name: 'name', type: 'string' }
+                        ,{ name: 'type', type: 'string' }
+                        ,{ name: 'content', type: 'string' }
+                        ,{ name: 'priority', type: 'int' }
+                        ,{ name: 'ttl', type: 'int' }
+                ]
+                ,data: {
+                        items: [
+                               {
+                                        'name': 'www.test.com'
+                                        ,'type': 'A'
+                                        ,'content': '127.0.0.1'
+                                        ,'priority': 1
+                                        ,'ttl': 86400
+                               }
+                        ]
+                }
+                ,proxy: {
+                       type: 'memory'
+                       ,reader: {
+                                type: 'json'
+                                ,root: 'items'
+                        }
+                }
+        } );
+
+        // Prepare row editing plugin
+        this.zoneRecordEditingPlugin = Ext.create( 'Ext.grid.plugin.RowEditing', {
+                clicksToEdit: 1
+        } );
+
+        // Create record type store
+        this.recordTypeStore = Ext.create( 'Ext.data.Store', {
+                fields: [ 'type' ]
+                // TODO: Add numeric identifiers for each type
+                ,data: [
+                        { type: "A" }
+                        ,{ type: "AAAA" }
+                        ,{ type: "CNAME" }
+                        ,{ type: "HINFO" }
+                        ,{ type: "MX" }
+                        ,{ type: "NAPTR" }
+                        ,{ type: "NS" }
+                        ,{ type: "PTR" }
+                        ,{ type: "SOA" }
+                        ,{ type: "SPF" }
+                        ,{ type: "SRV" }
+                        ,{ type: "SSHFP" }
+                        ,{ type: "TXT" }
+                        ,{ type: "RP" }
+                ]
+        } );
+
+        // Create record type combo
+        this.recordTypeCombo = Ext.create( 'Ext.form.ComboBox', {
+                store: this.recordTypeStore
+                ,queryMode: 'local'
+                ,displayField: 'type'
+                ,valueField: 'type'
+                ,editable: false
+        } );
+
+        // Create grid panel
+        // TODO: Add remote sorting.
+        this.zoneRecordGridPanel = Ext.create( 'Ext.grid.Panel', {
+                store: this.zoneRecordStore
+                ,plugins: [ this.zoneRecordEditingPlugin ]
+                ,columns: [
+                        { text: 'Name',  dataIndex: 'name', editor: 'textfield' }
+                        ,{ text: 'Type', dataIndex: 'type', editor: this.recordTypeCombo }
+                        ,{ text: 'Content', dataIndex: 'content', flex: 1, editor: 'textfield' }
+                        ,{ text: 'Priority', dataIndex: 'priority', editor: {
+                                        xtype: 'numberfield'
+                                        ,allowBlank: false
+                                        ,minValue: 1
+                                        ,maxValue: 86400
+                                }
+                        }
+                        ,{ text: 'TTL', dataIndex: 'ttl', editor: {
+                                        xtype: 'numberfield'
+                                        ,allowBlank: false
+                                        ,minValue: 1
+                                        ,maxValue: 86400
+                                }
+                        }
+                ]
+        } );
+
+        return this.zoneRecordGridPanel;
+}
+
+/**
+ * Method used for creating the edit / view zone window.
+ * @function
+ * @return {Object} Ext.window.Window object.
+ */
+zones.prototype.createZoneWindow = function() {
+        // Prepare grid panel
+        this.createZoneRecordGrid();
+
+        // Create window
+        this.zoneWindow = Ext.create( 'Ext.window.Window', {
+                title: 'Edit zone: [zone name]'
+                ,maximized: true
+                ,layout: 'fit'
+                ,modal: true
+                ,maximizable: true
+                ,closeAction: 'destroy'
+                ,resizable: true
+                ,height: 400
+                ,width: 600
+                ,items: this.zoneRecordGridPanel
+        } );
+
+        return this.zoneWindow;
+}
+
+/**
  * Method used for creating the zones top toolbar.
  * @function
  * @return {Object} Ext.toolbar.Toolbar object.
@@ -94,7 +220,15 @@ zones.prototype.createZonesToolbar = function() {
         this.zonesToolbar = Ext.create( 'Ext.toolbar.Toolbar', {
                 items: [
                         {
+                                // TODO: Enable if grid record is selected
                                 text: 'Edit zone'
+                                ,handler: function() {
+                                        // Create window
+                                        this.createZoneWindow();
+
+                                        // Display
+                                        this.zoneWindow.show();
+                                }.bind( this )
                         }
                         ,'-'
                         ,{
