@@ -244,6 +244,134 @@ zones.prototype.createZoneRecordsToolbar = function() {
 }
 
 /**
+ * Method used for creating the add master zone window.
+ * @function
+ * @return {Object} Ext.window.Window object.
+ */
+zones.prototype.createAddMasterZoneWindow = function() {
+        // Create zone type store
+        this.masterZoneTypeStore = Ext.create( 'Ext.data.Store', {
+                fields: [ 'type', 'typeId' ]
+                ,data: [
+                        // TODO: Use proper numeric ids
+                        { type: "master", typeId: "0" }
+                        ,{ type: "native", typeId: "1" }
+                ]
+        } );
+
+        // Create zone type combo
+        this.masterZoneTypeCombo = Ext.create( 'Ext.form.ComboBox', {
+                store: this.masterZoneTypeStore
+                ,fieldLabel: 'Type'
+                ,queryMode: 'local'
+                ,displayField: 'type'
+                ,valueField: 'typeId'
+                ,editable: false
+                ,labelAlign: 'right'
+        } );
+
+        // Add master zone form
+        this.addMasterZoneForm = Ext.create( 'Ext.form.Panel', {
+                defaultType: 'textfield'
+                ,labelAlign: 'right'
+                ,border: false
+                ,items: [
+                        {
+                                fieldLabel: 'Zone Name'
+                                ,name: 'name'
+                                ,labelAlign: 'right'
+                                ,allowBlank: false
+                        }
+                        ,this.masterZoneTypeCombo
+                        // TODO: Add owner, and template
+                ]
+        } );
+
+        // Create window
+        this.addMasterZoneWindow = Ext.create( 'Ext.window.Window', {
+                title: 'Add master zone'
+                ,layout: 'fit'
+                ,modal: true
+                ,closeAction: 'destroy'
+                ,resizable: false
+                ,height: 110
+                ,width: 300
+                ,items: this.addMasterZoneForm
+                ,bbar: Ext.create( 'Ext.toolbar.Toolbar', {
+                        items: [
+                                '->'
+                                ,{
+                                        text: 'Create'
+                                }
+                                ,{
+                                        text: 'Close'
+                                }
+                        ]
+                } )
+        } );
+
+        return this.addMasterZoneWindow;
+}
+
+/**
+ * Method used for creating the add slave zone window.
+ * @function
+ * @return {Object} Ext.window.Window object.
+ */
+zones.prototype.createAddSlaveZoneWindow = function() {
+        // Add master zone form
+        this.addSlaveZoneForm = Ext.create( 'Ext.form.Panel', {
+                defaultType: 'textfield'
+                ,labelAlign: 'right'
+                ,border: false
+                ,items: [
+                        {
+                                fieldLabel: 'Zone Name'
+                                ,name: 'name'
+                                ,labelAlign: 'right'
+                                ,allowBlank: false
+                                ,labelWidth: 160
+                        }
+                        ,{
+                                fieldLabel: 'IP address of master NS'
+                                ,name: 'ip'
+                                ,labelAlign: 'right'
+                                ,allowBlank: false
+                                ,labelWidth: 160
+                        }
+                        // TODO: Add owner
+                ]
+        } );
+
+        // Create window
+        this.addSlaveZoneWindow = Ext.create( 'Ext.window.Window', {
+                title: 'Add slave zone'
+                ,layout: 'fit'
+                ,modal: true
+                ,closeAction: 'destroy'
+                ,resizable: false
+                ,height: 110
+                ,width: 400
+                ,items: [
+                       this.addSlaveZoneForm
+                ]
+                ,bbar: Ext.create( 'Ext.toolbar.Toolbar', {
+                        items: [
+                                '->'
+                                ,{
+                                        text: 'Create'
+                                }
+                                ,{
+                                        text: 'Close'
+                                }
+                        ]
+                } )
+        } );
+
+        return this.addSlaveZoneWindow;
+}
+
+/**
  * Method used for creating the zones top toolbar.
  * @function
  * @return {Object} Ext.toolbar.Toolbar object.
@@ -267,9 +395,23 @@ zones.prototype.createZonesToolbar = function() {
                         ,'-'
                         ,{
                                 text: 'Add master zone'
+                                ,handler: function() {
+                                        // Create window
+                                        this.createAddMasterZoneWindow();
+
+                                        // Display
+                                        this.addMasterZoneWindow.show();
+                                }.bind( this )
                         }
                         ,{
                                 text: 'Add slave zone'
+                                ,handler: function() {
+                                        // Create window
+                                        this.createAddSlaveZoneWindow();
+
+                                        // Display
+                                        this.addSlaveZoneWindow.show();
+                                }.bind( this )
                         }
                         ,'-'
                         ,{
