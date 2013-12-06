@@ -10,6 +10,6 @@
 /bin/
 /composer.phar
 *~
-/public/js/ext-4.2.0-gpl.zip
-/public/js/ext-4.2.0.663/
-/public/js/extjs
+/src/jsPowerAdmin/WebBundle/Resources/public/js/ext-4.2.0-gpl.zip
+/src/jsPowerAdmin/WebBundle/Resources/public/js/ext-4.2.0.663/
+/src/jsPowerAdmin/WebBundle/Resources/public/js/extjs
