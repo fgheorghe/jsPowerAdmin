@@ -1,0 +1,4 @@
+js_power_admin_web:
+    resource: "@jsPowerAdminWebBundle/Resources/config/routing.yml"
+    prefix:   /
+
