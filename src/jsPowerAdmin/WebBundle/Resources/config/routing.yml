@@ -1,3 +1,7 @@
 js_power_admin_web_index:
     pattern:  /
     defaults: { _controller: jsPowerAdminWebBundle:Default:index }
+js_power_admin_web_zones:
+    pattern:  /zones
+    defaults: { _controller: jsPowerAdminWebBundle:Zones:index }
+    methods:  [ GET ]

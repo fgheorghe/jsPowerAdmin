@@ -30,21 +30,15 @@ zones.prototype.createZoneGridPanel = function() {
         // TODO: Add remote JSON store.
         // NOTE: Stub.
         this.zoneStore = Ext.create( 'Ext.data.Store', {
-                fields: [ 'name', 'type', 'records' ]
-                ,data: {
-                        items: [
-                               {
-                                        'name': 'test.com'
-                                        ,'type': 'master'
-                                        ,'records': 1
-                               }
-                        ]
-                }
+                fields: [ 'id', 'name', 'type', 'records' ]
+                ,autoLoad: true
+                ,autoSync: true
                 ,proxy: {
-                       type: 'memory'
-                       ,reader: {
+                        type: 'rest'
+                        ,url: '/zones'
+                        ,reader: {
                                 type: 'json'
-                                ,root: 'items'
+                                ,root: 'data'
                         }
                 }
         } );
