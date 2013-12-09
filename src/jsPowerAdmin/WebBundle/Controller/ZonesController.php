@@ -12,8 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ZonesController extends Controller
 {
-    public function getAction()
-    {
+    private function formatOutput( array $output ) {
+        // TODO: Remove redundant code.
         // Create Json Encoder
         $encoders = array(
                 new JsonEncoder()
@@ -30,9 +30,19 @@ class ZonesController extends Controller
                 ,$encoders
         );
 
-        // Prepare content
-        $jsonContent = $serializer->serialize(
-                // TODO: Add real data.
+        // Create response object.
+        $response = new Response($serializer->serialize($output,'json'));
+        // Set content type.
+        // TODO: Include response HTTP code.
+        $response->headers->set('Content-Type', 'application/json');
+        // Return response.
+        return $response;
+    }
+
+    public function getAction()
+    {
+        // TODO: Implement.
+        return $this->formatOutput( // TODO: Add real data.
                 array(
                         "data" => array(
                                         "id" => 1
@@ -42,95 +52,21 @@ class ZonesController extends Controller
                                         ,"records" => 1
                                 )
                 )
-                ,'json'
         );
-
-        // Create response object.
-        $response = new Response($jsonContent);
-        // Set content type.
-        $response->headers->set('Content-Type', 'application/json');
-        // Return response.
-        return $response;
     }
 
     public function putAction() {
-        // TODO: Implement and remove redundant code!
-        // Create Json Encoder
-        $encoders = array(
-                new JsonEncoder()
-        );
-
-        // Create normalizer
-        $normalizers = array(
-                new GetSetMethodNormalizer()
-        );
-
-        // Prepare resializer
-        $serializer = new Serializer(
-                $normalizers
-                ,$encoders
-        );
-
-        // TODO: Implement and remove redundant code!
-        // Create response object.
-        $response = new Response($serializer->serialize(array(),'json'));
-        // Set content type.
-        $response->headers->set('Content-Type', 'application/json');
-        // Return response.
-        return $response;
+        // TODO: Implement.
+        return $this->formatOutput( array() );
     }
 
     public function postAction() {
-        // TODO: Implement and remove redundant code!
-        // Create Json Encoder
-        $encoders = array(
-                new JsonEncoder()
-        );
-
-        // Create normalizer
-        $normalizers = array(
-                new GetSetMethodNormalizer()
-        );
-
-        // Prepare resializer
-        $serializer = new Serializer(
-                $normalizers
-                ,$encoders
-        );
-
-        // TODO: Implement and remove redundant code!
-        // Create response object.
-        $response = new Response($serializer->serialize(array(),'json'));
-        // Set content type.
-        $response->headers->set('Content-Type', 'application/json');
-        // Return response.
-        return $response;
+        // TODO: Implement.
+        return $this->formatOutput( array() );
     }
 
     public function deleteAction() {
-        // TODO: Implement and remove redundant code!
-        // Create Json Encoder
-        $encoders = array(
-                new JsonEncoder()
-        );
-
-        // Create normalizer
-        $normalizers = array(
-                new GetSetMethodNormalizer()
-        );
-
-        // Prepare resializer
-        $serializer = new Serializer(
-                $normalizers
-                ,$encoders
-        );
-
-        // TODO: Implement and remove redundant code!
-        // Create response object.
-        $response = new Response($serializer->serialize(array(),'json'));
-        // Set content type.
-        $response->headers->set('Content-Type', 'application/json');
-        // Return response.
-        return $response;
+        // TODO: Implement.
+        return $this->formatOutput( array() );
     }
 }
