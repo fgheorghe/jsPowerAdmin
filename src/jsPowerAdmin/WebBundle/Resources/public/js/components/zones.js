@@ -53,8 +53,9 @@ zones.prototype.createZoneGridPanel = function() {
                 this.selectedZoneId = record.data.id;
                 this.selectedZoneName = record.data.name;
 
-                // Enable edit zone button
+                // Enable edit and delete zone buttons
                 this.editZoneButton.setDisabled( false );
+                this.deleteZoneButton.setDisabled( false );
         }
 
         // Item double click listener
@@ -264,22 +265,51 @@ zones.prototype.createAddMasterZoneWindow = function() {
                 ,labelAlign: 'right'
         } );
 
+        // Create zone name text field
+        this.masterZoneNameTextField = Ext.create( 'Ext.form.field.Text', {
+                fieldLabel: 'Zone Name'
+                ,name: 'name'
+                ,labelAlign: 'right'
+                ,allowBlank: false
+        } );
+
         // Add master zone form
         this.addMasterZoneForm = Ext.create( 'Ext.form.Panel', {
                 defaultType: 'textfield'
                 ,labelAlign: 'right'
                 ,border: false
                 ,items: [
-                        {
-                                fieldLabel: 'Zone Name'
-                                ,name: 'name'
-                                ,labelAlign: 'right'
-                                ,allowBlank: false
-                        }
+                        ,this.masterZoneNameTextField
                         ,this.masterZoneTypeCombo
                         // TODO: Add owner, and template
                 ]
         } );
+
+        // Create master zone button handler
+        this.createMasterZoneButtonHandler = function() {
+                // Create zone
+                Ext.Ajax.request( {
+                        url: '/zones'
+                        ,method: 'PUT'
+                        ,params: {
+                                name: this.masterZoneNameTextField.getValue()
+                                ,type: this.masterZoneTypeCombo.getValue()
+                        }
+                        // TODO: Add proper error handling.
+                        ,success: function( response ) {
+                                // Close window.
+                                this.closeMasterZoneButtonHandler();
+
+                                // Reload grid data
+                                this.zoneGridPanel.getStore().load();
+                        }.bind( this )
+                } );
+        }
+
+        // Close master zone window button handler
+        this.closeMasterZoneButtonHandler = function() {
+                this.addMasterZoneWindow.close();
+        }
 
         // Create window
         this.addMasterZoneWindow = Ext.create( 'Ext.window.Window', {
@@ -296,9 +326,11 @@ zones.prototype.createAddMasterZoneWindow = function() {
                                 '->'
                                 ,{
                                         text: 'Create'
+                                        ,handler: this.createMasterZoneButtonHandler.bind( this )
                                 }
                                 ,{
                                         text: 'Close'
+                                        ,handler: this.closeMasterZoneButtonHandler.bind( this )
                                 }
                         ]
                 } )
@@ -384,6 +416,41 @@ zones.prototype.createZonesToolbar = function() {
                 }.bind( this )
         } );
 
+        // Delete zone button
+        this.deleteZoneButton = Ext.create( 'Ext.button.Button', {
+                text: 'Delete Zone'
+                ,disabled: true
+                ,handler: function() {
+                        // Create confirm dialog.
+                        Ext.Msg.show( {
+                               title: 'Delete zone?'
+                               ,msg: 'Delete zone \'' + this.selectedZoneName + '\' and all related data?'
+                               ,buttons: Ext.Msg.YESNO
+                               ,icon: Ext.Msg.QUESTION
+                               ,fn: function( btn ) {
+                                       if ( btn === "yes" ) {
+                                               // Trigger request
+                                               Ext.Ajax.request( {
+                                                       url: '/zone/' + this.selectedZoneId
+                                                       ,method: 'DELETE'
+                                                        // TODO: Add proper error handling.
+                                                       ,success: function() {
+                                                              // Reload grid data
+                                                              this.zoneGridPanel.getStore().load();
+
+                                                              // Disable buttons and reset variables.
+                                                              this.editZoneButton.setDisabled( true );
+                                                              this.deleteZoneButton.setDisabled( true );
+                                                              this.selectedZoneId = null;
+                                                              this.selectedZoneName = null;
+                                                       }.bind( this )
+                                               } );
+                                       }
+                                }.bind( this )
+                        } );
+                }.bind( this )
+        } );
+
         // Create toolbar
         // TODO: Add functionality
         this.zonesToolbar = Ext.create( 'Ext.toolbar.Toolbar', {
@@ -411,9 +478,7 @@ zones.prototype.createZonesToolbar = function() {
                                 }.bind( this )
                         }
                         ,'-'
-                        ,{
-                                text: 'Delete Zone'
-                        }
+                        ,this.deleteZoneButton
                 ]
         } );
 

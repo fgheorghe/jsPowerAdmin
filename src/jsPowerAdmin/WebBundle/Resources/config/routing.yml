@@ -9,12 +9,8 @@ js_power_admin_web_zones_put:
     pattern:  /zones
     defaults: { _controller: jsPowerAdminWebBundle:Zones:put }
     methods:  [ PUT ]
-js_power_admin_web_zones_post:
-    pattern:  /zone/{id}
-    defaults: { _controller: jsPowerAdminWebBundle:Zones:post }
-    methods:  [ POST ]
 js_power_admin_web_zones_delete:
-    pattern:  /zone/{id}
+    pattern:  /zone/{domainId}
     defaults: { _controller: jsPowerAdminWebBundle:Zones:delete }
     methods:  [ DELETE ]
 js_power_admin_web_records_get:

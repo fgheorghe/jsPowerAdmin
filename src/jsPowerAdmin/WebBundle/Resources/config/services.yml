@@ -1,6 +1,7 @@
 parameters:
 #    js_power_admin_web.example.class: jsPowerAdmin\WebBundle\Example
     js_power_admin_web.ui:
+        # NOTE: Do not change!
         record_types:
                 - type: A
                   id: 1
@@ -30,6 +31,7 @@ parameters:
                   id: 13
                 - type: RP
                   id: 14
+        # NOTE: Do not change!
         master_zone_types:
                 - type: master
                   id: 1

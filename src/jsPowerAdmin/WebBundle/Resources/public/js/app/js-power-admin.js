@@ -13,6 +13,9 @@ var jsPowerAdmin = function() {
  * @function
  */
 jsPowerAdmin.prototype.init = function() {
+        // Include required files.
+        Ext.Loader.syncRequire( [ 'Ext.window.MessageBox' ] );
+
         // Prepare the 'Zones' component
         this.zones = new zones();
 
