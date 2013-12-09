@@ -54,4 +54,84 @@ class RecordsController extends Controller
         // Return response.
         return $response;
     }
+
+    public function putAction() {
+        // TODO: Implement and remove redundant code!
+        // Create Json Encoder
+        $encoders = array(
+                new JsonEncoder()
+        );
+
+        // Create normalizer
+        $normalizers = array(
+                new GetSetMethodNormalizer()
+        );
+
+        // Prepare resializer
+        $serializer = new Serializer(
+                $normalizers
+                ,$encoders
+        );
+
+        // TODO: Implement and remove redundant code!
+        // Create response object.
+        $response = new Response($serializer->serialize(array(),'json'));
+        // Set content type.
+        $response->headers->set('Content-Type', 'application/json');
+        // Return response.
+        return $response;
+    }
+
+    public function postAction() {
+        // TODO: Implement and remove redundant code!
+        // Create Json Encoder
+        $encoders = array(
+                new JsonEncoder()
+        );
+
+        // Create normalizer
+        $normalizers = array(
+                new GetSetMethodNormalizer()
+        );
+
+        // Prepare resializer
+        $serializer = new Serializer(
+                $normalizers
+                ,$encoders
+        );
+
+        // TODO: Implement and remove redundant code!
+        // Create response object.
+        $response = new Response($serializer->serialize(array(),'json'));
+        // Set content type.
+        $response->headers->set('Content-Type', 'application/json');
+        // Return response.
+        return $response;
+    }
+
+    public function deleteAction() {
+        // TODO: Implement and remove redundant code!
+        // Create Json Encoder
+        $encoders = array(
+                new JsonEncoder()
+        );
+
+        // Create normalizer
+        $normalizers = array(
+                new GetSetMethodNormalizer()
+        );
+
+        // Prepare resializer
+        $serializer = new Serializer(
+                $normalizers
+                ,$encoders
+        );
+
+        // Create response object.
+        $response = new Response($serializer->serialize(array(),'json'));
+        // Set content type.
+        $response->headers->set('Content-Type', 'application/json');
+        // Return response.
+        return $response;
+    }
 }
