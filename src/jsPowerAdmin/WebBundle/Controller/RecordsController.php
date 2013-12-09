@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class ZonesController extends Controller
+class RecordsController extends Controller
 {
     public function indexAction()
     {
@@ -36,10 +36,12 @@ class ZonesController extends Controller
                 array(
                         "data" => array(
                                         "id" => 1
-                                        ,"name" => "test.com"
+                                        ,"name" => "www.test.com"
                                         // TODO: Use ids for types
-                                        ,"type" => "master"
-                                        ,"records" => 1
+                                        ,"type" => "A"
+                                        ,"content" => "127.0.0.1"
+                                        ,"priority" => 1
+                                        ,"ttl" => 86400
                                 )
                 )
                 ,'json'

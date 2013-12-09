@@ -27,7 +27,7 @@ zones.prototype.init = function() {
  */
 zones.prototype.createZoneGridPanel = function() {
         // Create store
-        // TODO: Sorting.
+        // TODO: Add sorting and field data typing.
         // NOTE: Stub.
         this.zoneStore = Ext.create( 'Ext.data.Store', {
                 fields: [ 'id', 'name', 'type', 'records' ]
@@ -82,32 +82,25 @@ zones.prototype.createPanel = function() {
  */
 zones.prototype.createZoneRecordGrid = function() {
         // Create store
-        // TODO: Add remote JSON store.
+        // TODO: Add sorting and editing.
         // NOTE: Stub.
         this.zoneRecordStore = Ext.create( 'Ext.data.Store', {
                 fields: [
-                        { name: 'name', type: 'string' }
+                        { name: 'id', type: 'int' }
+                        ,{ name: 'name', type: 'string' }
                         ,{ name: 'type', type: 'string' }
                         ,{ name: 'content', type: 'string' }
                         ,{ name: 'priority', type: 'int' }
                         ,{ name: 'ttl', type: 'int' }
                 ]
-                ,data: {
-                        items: [
-                               {
-                                        'name': 'www.test.com'
-                                        ,'type': 'A'
-                                        ,'content': '127.0.0.1'
-                                        ,'priority': 1
-                                        ,'ttl': 86400
-                               }
-                        ]
-                }
+                ,autoLoad: true
+                ,autoSync: true
                 ,proxy: {
-                       type: 'memory'
-                       ,reader: {
+                        type: 'rest'
+                        ,url: '/records'
+                        ,reader: {
                                 type: 'json'
-                                ,root: 'items'
+                                ,root: 'data'
                         }
                 }
         } );
