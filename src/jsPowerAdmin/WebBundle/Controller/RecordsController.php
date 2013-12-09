@@ -14,18 +14,17 @@ class RecordsController extends Controller
 {
     public function getAction()
     {
-        // TODO: Implement.
-        return Output::format( // TODO: Add real data.
+        // Select records.
+        // TODO: Filter by domain / zone id.
+        // TODO: Add record count.
+        $records = $this->getDoctrine()
+                ->getRepository('jsPowerAdminWebBundle:Records')
+                ->findAll();
+
+        // Format output and return.
+        return Output::format(
                 array(
-                        "data" => array(
-                                        "id" => 1
-                                        ,"name" => "www.test.com"
-                                        // TODO: Use ids for types
-                                        ,"type" => "A"
-                                        ,"content" => "127.0.0.1"
-                                        ,"priority" => 1
-                                        ,"ttl" => 86400
-                                )
+                        "data" => $records
                 )
         );
     }

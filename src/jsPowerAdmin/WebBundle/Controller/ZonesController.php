@@ -14,16 +14,15 @@ class ZonesController extends Controller
 {
     public function getAction()
     {
-        // TODO: Implement.
-        return Output::format( // TODO: Add real data.
+        // Select zones.
+        $zones = $this->getDoctrine()
+                ->getRepository('jsPowerAdminWebBundle:Domains')
+                ->findAll();
+
+        // Format output and return.
+        return Output::format(
                 array(
-                        "data" => array(
-                                        "id" => 1
-                                        ,"name" => "test.com"
-                                        // TODO: Use ids for types
-                                        ,"type" => "master"
-                                        ,"records" => 1
-                                )
+                        "data" => $zones
                 )
         );
     }

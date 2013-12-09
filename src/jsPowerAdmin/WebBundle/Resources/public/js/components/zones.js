@@ -27,7 +27,7 @@ zones.prototype.init = function() {
  */
 zones.prototype.createZoneGridPanel = function() {
         // Create store
-        // TODO: Add sorting and field data typing.
+        // TODO: Add sorting and field data typing (perhaps all other database fields?).
         // NOTE: Stub.
         this.zoneStore = Ext.create( 'Ext.data.Store', {
                 fields: [ 'id', 'name', 'type', 'records' ]
@@ -82,7 +82,7 @@ zones.prototype.createPanel = function() {
  */
 zones.prototype.createZoneRecordGrid = function() {
         // Create store
-        // TODO: Add sorting and editing.
+        // TODO: Add sorting and editing (perhaps all other database fields?).
         // NOTE: Stub.
         this.zoneRecordStore = Ext.create( 'Ext.data.Store', {
                 fields: [
@@ -90,7 +90,7 @@ zones.prototype.createZoneRecordGrid = function() {
                         ,{ name: 'name', type: 'string' }
                         ,{ name: 'type', type: 'string' }
                         ,{ name: 'content', type: 'string' }
-                        ,{ name: 'priority', type: 'int' }
+                        ,{ name: 'prio', type: 'int' }
                         ,{ name: 'ttl', type: 'int' }
                 ]
                 ,autoLoad: true
@@ -135,7 +135,7 @@ zones.prototype.createZoneRecordGrid = function() {
                         { text: 'Name',  dataIndex: 'name', editor: 'textfield' }
                         ,{ text: 'Type', dataIndex: 'type', editor: this.recordTypeCombo }
                         ,{ text: 'Content', dataIndex: 'content', flex: 1, editor: 'textfield' }
-                        ,{ text: 'Priority', dataIndex: 'priority', editor: {
+                        ,{ text: 'Priority', dataIndex: 'prio', editor: {
                                         xtype: 'numberfield'
                                         ,allowBlank: false
                                         ,minValue: 1
