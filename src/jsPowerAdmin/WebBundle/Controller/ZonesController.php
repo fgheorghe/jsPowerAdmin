@@ -45,7 +45,11 @@ class ZonesController extends Controller
                 ,'json'
         );
 
-        // Return response
-        return new Response($jsonContent);
+        // Create response object.
+        $response = new Response($jsonContent);
+        // Set content type.
+        $response->headers->set('Content-Type', 'application/json');
+        // Return response.
+        return $response;
     }
 }
