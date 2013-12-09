@@ -1,0 +1,54 @@
+jsPowerAdmin\WebBundle\Entity\Records:
+    type: entity
+    table: records
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            comment: ''
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        domainId:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
+            column: domain_id
+        name:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: ''
+        type:
+            type: string
+            nullable: true
+            length: 10
+            fixed: false
+            comment: ''
+        content:
+            type: string
+            nullable: true
+            length: 64000
+            fixed: false
+            comment: ''
+        ttl:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
+        prio:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
+        changeDate:
+            type: integer
+            nullable: true
+            unsigned: false
+            comment: ''
+            column: change_date
+    lifecycleCallbacks: {  }
