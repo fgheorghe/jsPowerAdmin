@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ZonesController extends Controller
 {
-    public function indexAction()
+    public function getAction()
     {
         // Create Json Encoder
         $encoders = array(

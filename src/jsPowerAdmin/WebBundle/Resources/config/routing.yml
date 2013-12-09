@@ -3,9 +3,9 @@ js_power_admin_web_index:
     defaults: { _controller: jsPowerAdminWebBundle:Default:index }
 js_power_admin_web_zones:
     pattern:  /zones
-    defaults: { _controller: jsPowerAdminWebBundle:Zones:index }
+    defaults: { _controller: jsPowerAdminWebBundle:Zones:get }
     methods:  [ GET ]
 js_power_admin_web_records:
     pattern:  /records
-    defaults: { _controller: jsPowerAdminWebBundle:Records:index }
+    defaults: { _controller: jsPowerAdminWebBundle:Records:get }
     methods:  [ GET ]
