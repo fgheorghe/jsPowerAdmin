@@ -47,7 +47,7 @@ zones.prototype.createZoneGridPanel = function() {
                 }
         } );
 
-        // Item click listener
+        // Item single click listener
         this.zoneGridPanelItemClickListener = function( grid, record, item, index, e, eOpts ) {
                 // Set selected zone variables
                 this.selectedZoneId = record.data.id;
@@ -55,6 +55,15 @@ zones.prototype.createZoneGridPanel = function() {
 
                 // Enable edit zone button
                 this.editZoneButton.setDisabled( false );
+        }
+
+        // Item double click listener
+        this.zoneGridPanelItemDblClickListener = function( grid, record, item, index, e, eOpts ) {
+                // Create window
+                this.createZoneWindow();
+
+                // Display
+                this.zoneWindow.show();
         }
 
         // Create grid panel
@@ -69,6 +78,7 @@ zones.prototype.createZoneGridPanel = function() {
                 ]
                 ,listeners: {
                         itemclick: this.zoneGridPanelItemClickListener.bind( this )
+                        ,itemdblclick: this.zoneGridPanelItemDblClickListener.bind( this )
                 }
         } );
 
