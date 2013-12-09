@@ -13,6 +13,10 @@ var zones = function() {
  * @function
  */
 zones.prototype.init = function() {
+        // Prepare variables
+        this.selectedZoneId = null;
+        this.selectedZoneName = null;
+
         // Prepare view grid
         this.createZoneGridPanel();
 
@@ -43,6 +47,16 @@ zones.prototype.createZoneGridPanel = function() {
                 }
         } );
 
+        // Item click listener
+        this.zoneGridPanelItemClickListener = function( grid, record, item, index, e, eOpts ) {
+                // Set selected zone variables
+                this.selectedZoneId = record.data.id;
+                this.selectedZoneName = record.data.name;
+
+                // Enable edit zone button
+                this.editZoneButton.setDisabled( false );
+        }
+
         // Create grid panel
         // TODO: Add remote sorting.
         this.zoneGridPanel = Ext.create( 'Ext.grid.Panel', {
@@ -53,6 +67,9 @@ zones.prototype.createZoneGridPanel = function() {
                         ,{ text: 'Records', dataIndex: 'records' }
                         // TODO: Add owner column.
                 ]
+                ,listeners: {
+                        itemclick: this.zoneGridPanelItemClickListener.bind( this )
+                }
         } );
 
         return this.zoneGridPanel;
@@ -166,7 +183,7 @@ zones.prototype.createZoneWindow = function() {
 
         // Create window
         this.zoneWindow = Ext.create( 'Ext.window.Window', {
-                title: 'Edit zone: [zone name]'
+                title: 'Edit zone: ' + this.selectedZoneName
                 ,maximized: true
                 ,layout: 'fit'
                 ,modal: true
@@ -344,21 +361,24 @@ zones.prototype.createAddSlaveZoneWindow = function() {
  * @return {Object} Ext.toolbar.Toolbar object.
  */
 zones.prototype.createZonesToolbar = function() {
+        // Edit zone button
+        this.editZoneButton = Ext.create( 'Ext.button.Button', {
+                text: 'Edit zone'
+                ,disabled: true
+                ,handler: function() {
+                        // Create window
+                        this.createZoneWindow();
+
+                        // Display
+                        this.zoneWindow.show();
+                }.bind( this )
+        } );
+
         // Create toolbar
         // TODO: Add functionality
         this.zonesToolbar = Ext.create( 'Ext.toolbar.Toolbar', {
                 items: [
-                        {
-                                // TODO: Enable if grid record is selected
-                                text: 'Edit zone'
-                                ,handler: function() {
-                                        // Create window
-                                        this.createZoneWindow();
-
-                                        // Display
-                                        this.zoneWindow.show();
-                                }.bind( this )
-                        }
+                        this.editZoneButton
                         ,'-'
                         ,{
                                 text: 'Add master zone'
