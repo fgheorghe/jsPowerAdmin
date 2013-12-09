@@ -27,7 +27,7 @@ zones.prototype.init = function() {
  */
 zones.prototype.createZoneGridPanel = function() {
         // Create store
-        // TODO: Add remote JSON store.
+        // TODO: Sorting.
         // NOTE: Stub.
         this.zoneStore = Ext.create( 'Ext.data.Store', {
                 fields: [ 'id', 'name', 'type', 'records' ]
