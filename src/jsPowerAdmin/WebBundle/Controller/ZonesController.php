@@ -8,41 +8,14 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-
+use jsPowerAdmin\WebBundle\Output;
 
 class ZonesController extends Controller
 {
-    private function formatOutput( array $output ) {
-        // TODO: Remove redundant code.
-        // Create Json Encoder
-        $encoders = array(
-                new JsonEncoder()
-        );
-
-        // Create normalizer
-        $normalizers = array(
-                new GetSetMethodNormalizer()
-        );
-
-        // Prepare resializer
-        $serializer = new Serializer(
-                $normalizers
-                ,$encoders
-        );
-
-        // Create response object.
-        $response = new Response($serializer->serialize($output,'json'));
-        // Set content type.
-        // TODO: Include response HTTP code.
-        $response->headers->set('Content-Type', 'application/json');
-        // Return response.
-        return $response;
-    }
-
     public function getAction()
     {
         // TODO: Implement.
-        return $this->formatOutput( // TODO: Add real data.
+        return Output::format( // TODO: Add real data.
                 array(
                         "data" => array(
                                         "id" => 1
@@ -57,16 +30,16 @@ class ZonesController extends Controller
 
     public function putAction() {
         // TODO: Implement.
-        return $this->formatOutput( array() );
+        return Output::format( array() );
     }
 
     public function postAction() {
         // TODO: Implement.
-        return $this->formatOutput( array() );
+        return Output::format( array() );
     }
 
     public function deleteAction() {
         // TODO: Implement.
-        return $this->formatOutput( array() );
+        return Output::format( array() );
     }
 }
