@@ -2,6 +2,10 @@
         <head>
                 <title>jsPowerAdmin</title>
                 <link rel="stylesheet" type="text/css" href="{{ asset('js/extjs/resources/css/ext-all.css') }}">
+                <script type="text/javascript">
+                        // Echo configuration
+                        var config = {{ configuration|json_encode()|raw }};
+                </script>
                 <script src="{{ asset('js/extjs/ext-debug.js') }}" type="text/javascript"></script>
 
                 <script src="{{ asset('js/components/zones.js') }}" type="text/javascript"></script>

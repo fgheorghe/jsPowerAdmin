@@ -113,23 +113,7 @@ zones.prototype.createZoneRecordGrid = function() {
         // Create record type store
         this.recordTypeStore = Ext.create( 'Ext.data.Store', {
                 fields: [ 'type' ]
-                // TODO: Add numeric identifiers for each type
-                ,data: [
-                        { type: "A" }
-                        ,{ type: "AAAA" }
-                        ,{ type: "CNAME" }
-                        ,{ type: "HINFO" }
-                        ,{ type: "MX" }
-                        ,{ type: "NAPTR" }
-                        ,{ type: "NS" }
-                        ,{ type: "PTR" }
-                        ,{ type: "SOA" }
-                        ,{ type: "SPF" }
-                        ,{ type: "SRV" }
-                        ,{ type: "SSHFP" }
-                        ,{ type: "TXT" }
-                        ,{ type: "RP" }
-                ]
+                ,data: config.record_types
         } );
 
         // Create record type combo
@@ -137,7 +121,7 @@ zones.prototype.createZoneRecordGrid = function() {
                 store: this.recordTypeStore
                 ,queryMode: 'local'
                 ,displayField: 'type'
-                ,valueField: 'type'
+                ,valueField: 'id'
                 ,editable: false
         } );
 
@@ -239,11 +223,7 @@ zones.prototype.createAddMasterZoneWindow = function() {
         // Create zone type store
         this.masterZoneTypeStore = Ext.create( 'Ext.data.Store', {
                 fields: [ 'type', 'typeId' ]
-                ,data: [
-                        // TODO: Use proper numeric ids
-                        { type: "master", typeId: "0" }
-                        ,{ type: "native", typeId: "1" }
-                ]
+                ,data: config.master_zone_types
         } );
 
         // Create zone type combo
@@ -252,7 +232,7 @@ zones.prototype.createAddMasterZoneWindow = function() {
                 ,fieldLabel: 'Type'
                 ,queryMode: 'local'
                 ,displayField: 'type'
-                ,valueField: 'typeId'
+                ,valueField: 'id'
                 ,editable: false
                 ,labelAlign: 'right'
         } );

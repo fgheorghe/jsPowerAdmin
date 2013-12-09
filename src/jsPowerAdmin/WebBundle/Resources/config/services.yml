@@ -1,5 +1,40 @@
 parameters:
 #    js_power_admin_web.example.class: jsPowerAdmin\WebBundle\Example
+    js_power_admin_web.ui:
+        record_types:
+                - type: A
+                  id: 1
+                - type: AAAA
+                  id: 2
+                - type: CNAME
+                  id: 3
+                - type: HINFO
+                  id: 4
+                - type: MX
+                  id: 5
+                - type: NAPTR
+                  id: 6
+                - type: NS
+                  id: 7
+                - type: PTR
+                  id: 8
+                - type: SOA
+                  id: 9
+                - type: SPF
+                  id: 10
+                - type: SRV
+                  id: 11
+                - type: SSHFP
+                  id: 12
+                - type: TXT
+                  id: 13
+                - type: RP
+                  id: 14
+        master_zone_types:
+                - type: master
+                  id: 1
+                - type: native
+                  id: 2
 
 services:
 #    js_power_admin_web.example:
