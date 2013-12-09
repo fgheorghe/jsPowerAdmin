@@ -124,7 +124,7 @@ zones.prototype.createZoneRecordGrid = function() {
                 ,autoSync: true
                 ,proxy: {
                         type: 'rest'
-                        ,url: '/records'
+                        ,url: '/records/' + this.selectedZoneId
                         ,reader: {
                                 type: 'json'
                                 ,root: 'data'

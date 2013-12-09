@@ -18,7 +18,7 @@ js_power_admin_web_zones_delete:
     defaults: { _controller: jsPowerAdminWebBundle:Zones:delete }
     methods:  [ DELETE ]
 js_power_admin_web_records_get:
-    pattern:  /records
+    pattern:  /records/{domainId}
     defaults: { _controller: jsPowerAdminWebBundle:Records:get }
     methods:  [ GET ]
 js_power_admin_web_records_put:

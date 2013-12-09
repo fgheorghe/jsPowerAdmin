@@ -12,16 +12,18 @@ use jsPowerAdmin\WebBundle\Output;
 
 class RecordsController extends Controller
 {
-    public function getAction()
+    public function getAction( $domainId )
     {
         // Select records.
-        // TODO: Filter by domain / zone id.
         // TODO: Add record count.
         $records = $this->getDoctrine()
-                ->getRepository('jsPowerAdminWebBundle:Records')
-                ->findAll();
+                ->getRepository( 'jsPowerAdminWebBundle:Records')
+                ->findBy( array(
+                        "domainId" => $domainId
+                ) );
 
         // Format output and return.
+        // TODO: Return 404 if none found for this domain.
         return Output::format(
                 array(
                         "data" => $records
