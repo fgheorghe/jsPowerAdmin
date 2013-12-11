@@ -5,11 +5,11 @@ js_power_admin_web_zones_get:
     pattern:  /zones
     defaults: { _controller: jsPowerAdminWebBundle:Zones:get }
     methods:  [ GET ]
-js_power_admin_web_zones_put:
+js_power_admin_web_zones_post:
     pattern:  /zones
-    defaults: { _controller: jsPowerAdminWebBundle:Zones:put }
-    methods:  [ PUT ]
-js_power_admin_web_zones_delete:
+    defaults: { _controller: jsPowerAdminWebBundle:Zones:post }
+    methods:  [ POST ]
+js_power_admin_web_zone_delete:
     pattern:  /zone/{domainId}
     defaults: { _controller: jsPowerAdminWebBundle:Zones:delete }
     methods:  [ DELETE ]
@@ -17,15 +17,15 @@ js_power_admin_web_records_get:
     pattern:  /records/{domainId}
     defaults: { _controller: jsPowerAdminWebBundle:Records:get }
     methods:  [ GET ]
-js_power_admin_web_records_put:
-    pattern:  /records
+js_power_admin_web_record_put:
+    pattern:  /record/{domainId}/{recordId}
     defaults: { _controller: jsPowerAdminWebBundle:Records:put }
     methods:  [ PUT ]
 js_power_admin_web_records_post:
-    pattern:  /record/{id}
+    pattern:  /records/{domainId}
     defaults: { _controller: jsPowerAdminWebBundle:Records:post }
     methods:  [ POST ]
-js_power_admin_web_records_delete:
-    pattern:  /record/{id}
+js_power_admin_web_record_delete:
+    pattern:  /record/{domainId}/{recordId}
     defaults: { _controller: jsPowerAdminWebBundle:Records:delete }
     methods:  [ DELETE ]

@@ -37,6 +37,10 @@ parameters:
                   id: 1
                 - type: native
                   id: 2
+        # NOTE: Do not change!
+        record_defaults:
+                prio: 1
+                ttl: 86400
 
 services:
 #    js_power_admin_web.example:

@@ -9,6 +9,7 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use jsPowerAdmin\WebBundle\Output;
+use jsPowerAdmin\WebBundle\Entity\Records;
 
 class RecordsController extends Controller
 {
@@ -31,18 +32,93 @@ class RecordsController extends Controller
         );
     }
 
-    public function putAction() {
-        // TODO: Implement.
+    public function putAction( $domainId, $recordId ) {
+
+        // TODO: Add error handling (validation, duplicates, etc.).
+        $records = $this->getDoctrine()
+                ->getRepository( 'jsPowerAdminWebBundle:Records')
+                ->findBy( array(
+                        "domainId" => $domainId
+                        ,"id" => $recordId
+                ) );
+
+        // Prepare request object, and get values.
+        $name = $this->getRequest()->get( 'name' );
+        // TODO: Validate!
+        $type = $this->getRequest()->get( 'type' );
+        $content = $this->getRequest()->get( 'content' );
+        $priority = $this->getRequest()->get( 'prio' );
+        $ttl = $this->getRequest()->get( 'ttl' );
+
+        // Begin update.
+        $record = $records[0];
+        $record->setName( $name );
+        $record->setType( $type );
+        $record->setContent( $content );
+        $record->setPrio( $priority );
+        $record->setTtl( $ttl );
+        $record->setDomainId( $domainId );
+
+        // Save
+        // TODO: Add cache handling?!
+        $em = $this->getDoctrine()->getManager();
+        $em->persist( $record );
+        $em->flush();
+
+        // TODO: Return 404 if not found.
         return Output::format( array() );
     }
 
-    public function postAction() {
-        // TODO: Implement.
-        return Output::format( array() );
+    public function postAction( $domainId ) {
+        // TODO: Add error handling (validation, duplicates, etc.).
+
+        // Prepare request object, and get values.
+        $name = $this->getRequest()->get( 'name' );
+        // TODO: Validate!
+        $type = $this->getRequest()->get( 'type' );
+        $content = $this->getRequest()->get( 'content' );
+        $priority = $this->getRequest()->get( 'prio' );
+        $ttl = $this->getRequest()->get( 'ttl' );
+
+        // Create record
+        $record = new Records();
+        $record->setName( $name );
+        $record->setType( $type );
+        $record->setContent( $content );
+        $record->setPrio( $priority );
+        $record->setTtl( $ttl );
+        $record->setDomainId( $domainId );
+
+        // Save
+        // TODO: Add cache handling?!
+        $em = $this->getDoctrine()->getManager();
+        $em->persist( $record );
+        $em->flush();
+
+        return Output::format( array(
+                $name
+                ,$type
+                ,$content
+                ,$priority
+                ,$ttl
+        ) );
     }
 
-    public function deleteAction() {
-        // TODO: Implement.
+    public function deleteAction( $domainId, $recordId ) {
+        // TODO: Implement proper error handling!
+        $records = $this->getDoctrine()
+                ->getRepository( 'jsPowerAdminWebBundle:Records')
+                ->findBy( array(
+                        "domainId" => $domainId
+                        ,"id" => $recordId
+                ) );
+
+        // TODO: Add cache handling?!
+        // TODO: Delete related records!
+        $em = $this->getDoctrine()->getManager();
+        $em->remove( $records[0] );
+        $em->flush();
+
         return Output::format( array() );
     }
 }

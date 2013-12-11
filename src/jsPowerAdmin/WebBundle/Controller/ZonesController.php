@@ -28,16 +28,13 @@ class ZonesController extends Controller
         );
     }
 
-    public function putAction() {
+    public function postAction() {
         // TODO: Add error handling (validation, duplicates, etc.).
-
-        // Prepare type mapping
-        $uiConfiguration = $this->container->getParameter('js_power_admin_web.ui');
 
         // Prepare request object, and get values.
         $name = $this->getRequest()->get( 'name' );
-        // TODO: Validate.
-        $type = $uiConfiguration["master_zone_types"][$this->getRequest()->get( 'type' ) - 1]["type"];
+        // TODO: Validate!
+        $type = $this->getRequest()->get( 'type' );
 
         // Create zone
         $zone = new Domains();

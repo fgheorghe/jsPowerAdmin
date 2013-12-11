@@ -109,11 +109,10 @@ zones.prototype.createPanel = function() {
  * @return {Object} Ext.grid.Panel object.
  */
 zones.prototype.createZoneRecordGrid = function() {
-        // Create store
-        // TODO: Add sorting and editing (perhaps all other database fields?).
-        // NOTE: Stub.
-        this.zoneRecordStore = Ext.create( 'Ext.data.Store', {
-                fields: [
+        // Define a record model
+        Ext.define( 'Record', {
+                extend: 'Ext.data.Model'
+                ,fields: [
                         { name: 'id', type: 'int' }
                         ,{ name: 'name', type: 'string' }
                         ,{ name: 'type', type: 'string' }
@@ -121,6 +120,13 @@ zones.prototype.createZoneRecordGrid = function() {
                         ,{ name: 'prio', type: 'int' }
                         ,{ name: 'ttl', type: 'int' }
                 ]
+        } );
+
+        // Create store
+        // TODO: Add sorting and editing (perhaps all other database fields?).
+        // NOTE: Stub.
+        this.zoneRecordStore = Ext.create( 'Ext.data.Store', {
+                model: 'Record'
                 ,autoLoad: true
                 ,autoSync: true
                 ,proxy: {
@@ -129,6 +135,30 @@ zones.prototype.createZoneRecordGrid = function() {
                         ,reader: {
                                 type: 'json'
                                 ,root: 'data'
+                        }
+                        ,writer: {
+                                // Custom write function!
+                                write: function( request ) {
+                                        // Get selected record.
+                                        var record = this.zoneRecordGridPanel.getSelectionModel().getSelection()[0].data;
+
+                                        // Set parameters.
+                                        request.params = {
+                                                name: record.name
+                                                ,type: record.type
+                                                ,content: record.content
+                                                ,prio: record.prio
+                                                ,ttl: record.ttl
+                                        };
+
+                                        // "Fix" URL, by replacing records with record.
+                                        var url = request.url.split( "/" );
+                                        url[1] = "record";
+                                        request.url = url.join( "/" );
+
+                                        // Return the configured request object.
+                                        return request;
+                                }.bind( this )
                         }
                 }
         } );
@@ -140,7 +170,7 @@ zones.prototype.createZoneRecordGrid = function() {
 
         // Create record type store
         this.recordTypeStore = Ext.create( 'Ext.data.Store', {
-                fields: [ 'type' ]
+                fields: [ 'type', 'id' ]
                 ,data: config.record_types
         } );
 
@@ -149,9 +179,16 @@ zones.prototype.createZoneRecordGrid = function() {
                 store: this.recordTypeStore
                 ,queryMode: 'local'
                 ,displayField: 'type'
-                ,valueField: 'id'
+                ,valueField: 'type'
                 ,editable: false
+                ,triggerAction: 'all'
         } );
+
+        // Prepare listener
+        this.zoneRecordGridPanelItemClickListener = function() {
+                // Enable delete button.
+                this.deleteZoneRecordButton.setDisabled( false );
+        }
 
         // Create grid panel
         // TODO: Add remote sorting.
@@ -178,6 +215,9 @@ zones.prototype.createZoneRecordGrid = function() {
                                 }
                         }
                 ]
+                ,listeners: {
+                        itemclick: this.zoneRecordGridPanelItemClickListener.bind( this )
+                }
         } );
 
         return this.zoneRecordGridPanel;
@@ -208,10 +248,10 @@ zones.prototype.createZoneWindow = function() {
                         items: [
                                 '->'
                                 ,{
-                                        text: 'Commit'
-                                }
-                                ,{
                                         text: 'Close'
+                                        ,handler: function() {
+                                                this.zoneWindow.close();
+                                        }.bind( this )
                                 }
                         ]
                 } )
@@ -226,16 +266,148 @@ zones.prototype.createZoneWindow = function() {
  * @return {Object} Ext.toolbar.Toolbar object.
  */
 zones.prototype.createZoneRecordsToolbar = function() {
+        // Create delete record button
+        this.deleteZoneRecordButton = Ext.create( 'Ext.button.Button', {
+                text: 'Delete record'
+                ,disabled: true
+                ,handler: function() {
+                        var record = this.zoneRecordGridPanel.getSelectionModel().getSelection()[0].data;
+                        // Create confirm dialog.
+                        Ext.Msg.show( {
+                               title: 'Delete record?'
+                               ,msg: 'Delete record \'' + record.name + '\'?'
+                               ,buttons: Ext.Msg.YESNO
+                               ,icon: Ext.Msg.QUESTION
+                               ,fn: function( btn ) {
+                                       if ( btn === "yes" ) {
+                                               // Trigger request
+                                               Ext.Ajax.request( {
+                                                       url: '/record/' + this.selectedZoneId + '/' + record.id
+                                                       ,method: 'DELETE'
+                                                        // TODO: Add proper error handling.
+                                                       ,success: function() {
+                                                              // Reload grid data
+                                                              this.zoneRecordGridPanel.getStore().load();
+
+                                                              // Disable button.
+                                                              this.deleteZoneRecordButton.setDisabled( true );
+                                                       }.bind( this )
+                                               } );
+                                       }
+                                }.bind( this )
+                        } );
+                }.bind( this )
+        } );
+
         // Create toolbar
         // TODO: Add functionality
         this.zoneRecordsToolbar = Ext.create( 'Ext.toolbar.Toolbar', {
                 items: [
                         ,{
                                 text: 'Add record'
+                                ,handler: function() {
+                                        // Create record name field
+                                        var recordName = Ext.create( 'Ext.form.field.Text', {
+                                                fieldLabel: 'Name'
+                                                ,labelAlign: 'right'
+                                        } )
+                                        // Create priority field
+                                        // TODO: Add proper minValue for both Prio and TTL?
+                                        ,recordPriority = Ext.create( 'Ext.form.field.Number', {
+                                                minValue: 0
+                                                ,fieldLabel: 'Priority'
+                                                ,labelAlign: 'right'
+                                                ,value: config.record_defaults.prio
+                                        } )
+                                        // Create ttl field
+                                        ,recordTtl = Ext.create( 'Ext.form.field.Number', {
+                                                minValue: 0
+                                                ,fieldLabel: 'TTL'
+                                                ,labelAlign: 'right'
+                                                ,value: config.record_defaults.ttl
+                                        } )
+                                        // Create content field
+                                        ,recordContent = Ext.create( 'Ext.form.field.Text', {
+                                                fieldLabel: 'Content'
+                                                ,labelAlign: 'right'
+                                        } )
+                                        // Create record type combo
+                                        ,recordTypeCombo = Ext.create( 'Ext.form.ComboBox', {
+                                                store:  Ext.create( 'Ext.data.Store', {
+                                                        fields: [ 'type', 'id' ]
+                                                        ,data: config.record_types
+                                                } )
+                                                ,queryMode: 'local'
+                                                ,displayField: 'type'
+                                                ,valueField: 'type'
+                                                ,editable: false
+                                                ,labelAlign: 'right'
+                                                ,fieldLabel: 'Type'
+                                        } )
+                                        // Create a window, to populate record with data.
+                                        ,addRecordWindow = Ext.create( 'Ext.Window', {
+                                                modal: true
+                                                ,title: 'Add record, zone: ' + this.selectedZoneName
+                                                ,width: 300
+                                                ,height: 200
+                                                ,closable: true
+                                                ,resizable: false
+                                                ,closeAction: 'destroy'
+                                                ,layout: 'fit'
+                                                ,items: [ Ext.create( 'Ext.form.Panel', {
+                                                       items: [
+                                                                recordName
+                                                                ,recordTypeCombo
+                                                                ,recordContent
+                                                                ,recordPriority
+                                                                ,recordTtl
+                                                       ]
+                                                } ) ]
+                                                ,bbar: Ext.create( 'Ext.toolbar.Toolbar', {
+                                                        items: [
+                                                                '->'
+                                                                ,{
+                                                                        text: 'Create'
+                                                                        ,handler: function() {
+                                                                              // TODO: Validate form data!
+                                                                              // Create POST request, and create the record
+                                                                              Ext.Ajax.request( {
+                                                                                      method: 'POST'
+                                                                                      ,params: {
+                                                                                              name: recordName.getValue()
+                                                                                              ,type: recordTypeCombo.getValue()
+                                                                                              ,content: recordContent.getValue()
+                                                                                              ,prio: recordPriority.getValue()
+                                                                                              ,ttl: recordTtl.getValue()
+                                                                                      }
+                                                                                      ,url: '/records/' + this.selectedZoneId
+                                                                                      ,success: function() {
+                                                                                              // Reload grid.
+                                                                                              this.zoneRecordGridPanel.getStore().load();
+
+                                                                                              // Close the window.
+                                                                                              addRecordWindow.close();
+                                                                                      }.bind( this )
+                                                                                      // TODO: Add error handling!
+                                                                              } );
+                                                                        }.bind( this )
+                                                                }
+                                                                ,{
+                                                                        text: 'Close'
+                                                                        ,handler: function() {
+                                                                                // Close the window.
+                                                                                addRecordWindow.close();
+                                                                        }.bind( this )
+                                                                }
+                                                        ]
+                                                } )
+                                        } );
+
+                                        // Display window.
+                                        addRecordWindow.show();
+                                }.bind( this )
                         }
-                        ,{
-                                text: 'Delete record'
-                        }
+                        ,this.deleteZoneRecordButton
                 ]
         } );
 
@@ -260,7 +432,7 @@ zones.prototype.createAddMasterZoneWindow = function() {
                 ,fieldLabel: 'Type'
                 ,queryMode: 'local'
                 ,displayField: 'type'
-                ,valueField: 'id'
+                ,valueField: 'type'
                 ,editable: false
                 ,labelAlign: 'right'
         } );
@@ -290,7 +462,7 @@ zones.prototype.createAddMasterZoneWindow = function() {
                 // Create zone
                 Ext.Ajax.request( {
                         url: '/zones'
-                        ,method: 'PUT'
+                        ,method: 'POST'
                         ,params: {
                                 name: this.masterZoneNameTextField.getValue()
                                 ,type: this.masterZoneTypeCombo.getValue()
