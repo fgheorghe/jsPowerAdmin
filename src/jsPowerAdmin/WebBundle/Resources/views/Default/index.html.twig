@@ -6,8 +6,11 @@
                         // Echo configuration
                         var config = {{ configuration|json_encode()|raw }};
                 </script>
-                <script src="{{ asset('js/extjs/ext-debug.js') }}" type="text/javascript"></script>
-
+                {% if isDebug %}
+                        <script src="{{ asset('js/extjs/ext-debug.js') }}" type="text/javascript"></script>
+                {% else %}
+                        <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.2.0-gpl/ext-all.js"></script>
+                {% endif %}
                 <script src="{{ asset('js/components/zones.js') }}" type="text/javascript"></script>
                 <script src="{{ asset('js/app/js-power-admin.js') }}" type="text/javascript"></script>
         </head>
