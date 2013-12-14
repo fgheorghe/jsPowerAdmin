@@ -1,7 +1,7 @@
 parameters:
 #    js_power_admin_web.example.class: jsPowerAdmin\WebBundle\Example
     js_power_admin_web.ui:
-        # NOTE: Do not change!
+        # NOTE: Do not change! Used by UI drop downs.
         record_types:
                 - type: A
                   id: 1
@@ -31,13 +31,13 @@ parameters:
                   id: 13
                 - type: RP
                   id: 14
-        # NOTE: Do not change!
+        # NOTE: Do not change! Used by UI drop downs.
         master_zone_types:
                 - type: master
                   id: 1
                 - type: native
                   id: 2
-        # NOTE: Do not change!
+        # NOTE: Do not change! YUsed by UI fields.
         record_defaults:
                 prio: 1
                 ttl: 86400
