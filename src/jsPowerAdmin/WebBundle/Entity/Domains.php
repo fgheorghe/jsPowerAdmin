@@ -3,6 +3,7 @@
 namespace jsPowerAdmin\WebBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Domains
@@ -63,7 +64,25 @@ class Domains
      */
     private $account;
 
+    /**
+     * @var array
+     */
+    private $records; // NOTE: Only the record count is returned, using getRecordsCount()!
 
+    // Prepares records collection.
+    public function __construct() {
+        $this->records = new ArrayCollection();
+    }
+
+    /**
+     * Get record count.
+     *
+     * @return array
+     */
+    public function getRecordCount()
+    {
+        return count( $this->records );
+    }
 
     /**
      * Get id

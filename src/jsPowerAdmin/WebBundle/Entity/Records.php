@@ -70,7 +70,10 @@ class Records
      */
     private $changeDate;
 
-
+    /**
+     * @var object
+     */
+    private $domain; // NOTE: Not publicly used!
 
     /**
      * Get id
@@ -80,6 +83,29 @@ class Records
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set domain
+     *
+     * @param object $domain
+     * @return Records
+     */
+    public function setDomain($domain)
+    {
+        $this->domain = $domain;
+
+        return $this;
+    }
+
+    /**
+     * Get domain
+     *
+     * @return object
+     */
+    public function getDomain()
+    {
+        return $this->domain;
     }
 
     /**

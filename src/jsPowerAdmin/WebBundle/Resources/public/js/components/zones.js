@@ -34,7 +34,7 @@ zones.prototype.createZoneGridPanel = function() {
         // TODO: Add sorting and field data typing (perhaps all other database fields?).
         // NOTE: Stub.
         this.zoneStore = Ext.create( 'Ext.data.Store', {
-                fields: [ 'id', 'name', 'type', 'records' ]
+                fields: [ 'id', 'name', 'type', 'recordCount' ]
                 ,autoLoad: true
                 ,autoSync: true
                 ,proxy: {
@@ -74,7 +74,7 @@ zones.prototype.createZoneGridPanel = function() {
                 ,columns: [
                         { text: 'Name',  dataIndex: 'name', flex: 1 }
                         ,{ text: 'Type', dataIndex: 'type' }
-                        ,{ text: 'Records', dataIndex: 'records' }
+                        ,{ text: 'Records', dataIndex: 'recordCount' }
                         // TODO: Add owner column.
                 ]
                 ,listeners: {
@@ -289,6 +289,9 @@ zones.prototype.createZoneRecordsToolbar = function() {
                                                               // Reload grid data
                                                               this.zoneRecordGridPanel.getStore().load();
 
+                                                              // Reload zones grid (to re-load record count)
+                                                              this.zoneGridPanel.getStore().load();
+
                                                               // Disable button.
                                                               this.deleteZoneRecordButton.setDisabled( true );
                                                        }.bind( this )
@@ -382,8 +385,11 @@ zones.prototype.createZoneRecordsToolbar = function() {
                                                                                       }
                                                                                       ,url: '/records/' + this.selectedZoneId
                                                                                       ,success: function() {
-                                                                                              // Reload grid.
+                                                                                              // Reload records grid.
                                                                                               this.zoneRecordGridPanel.getStore().load();
+
+                                                                                              // Reload zones grid (to re-load record count)
+                                                                                              this.zoneGridPanel.getStore().load();
 
                                                                                               // Close the window.
                                                                                               addRecordWindow.close();

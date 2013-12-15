@@ -47,4 +47,9 @@ jsPowerAdmin\WebBundle\Entity\Domains:
             length: 40
             fixed: false
             comment: ''
+    oneToMany:
+        records:
+            targetEntity: Records
+            mappedBy: domain
+#                 cascade: ["persist", "merge"]
     lifecycleCallbacks: {  }

@@ -51,4 +51,11 @@ jsPowerAdmin\WebBundle\Entity\Records:
             unsigned: false
             comment: ''
             column: change_date
+    manyToOne:
+        domain:
+            targetEntity: Domains
+            inversedBy: records
+            joinColumn:
+                name: domain_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }

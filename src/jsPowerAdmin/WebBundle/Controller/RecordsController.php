@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use jsPowerAdmin\WebBundle\Output;
 use jsPowerAdmin\WebBundle\Entity\Records;
+use jsPowerAdmin\WebBundle\Entity\Domains;
 
 class RecordsController extends Controller
 {
@@ -57,7 +58,6 @@ class RecordsController extends Controller
         $record->setContent( $content );
         $record->setPrio( $priority );
         $record->setTtl( $ttl );
-        $record->setDomainId( $domainId );
 
         // Save
         // TODO: Add cache handling?!
@@ -80,6 +80,12 @@ class RecordsController extends Controller
         $priority = $this->getRequest()->get( 'prio' );
         $ttl = $this->getRequest()->get( 'ttl' );
 
+        // Get associated domain
+        // TODO: Handle missing domain.
+        $zones = $this->getDoctrine()
+                ->getRepository('jsPowerAdminWebBundle:Domains')
+                ->findById( $domainId );
+
         // Create record
         $record = new Records();
         $record->setName( $name );
@@ -87,7 +93,7 @@ class RecordsController extends Controller
         $record->setContent( $content );
         $record->setPrio( $priority );
         $record->setTtl( $ttl );
-        $record->setDomainId( $domainId );
+        $record->setDomain( $zones[0] );
 
         // Save
         // TODO: Add cache handling?!
@@ -96,11 +102,11 @@ class RecordsController extends Controller
         $em->flush();
 
         return Output::format( array(
-                $name
-                ,$type
-                ,$content
-                ,$priority
-                ,$ttl
+                "name" => $name
+                ,"type" => $type
+                ,"content" => $content
+                ,"prio" => $priority
+                ,"ttl" => $ttl
         ) );
     }
 
