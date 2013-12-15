@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use jsPowerAdmin\WebBundle\Output;
 use jsPowerAdmin\WebBundle\Entity\Domains;
+use jsPowerAdmin\WebBundle\Entity\Records;
 
 class ZonesController extends Controller
 {
@@ -61,8 +62,17 @@ class ZonesController extends Controller
                 ->findById( $domainId );
 
         // TODO: Add cache handling?!
-        // TODO: Delete related records!
+
+        // Get entity manager
         $em = $this->getDoctrine()->getManager();
+
+        // Delete related records!
+        // TODO: Add limit!
+        $query = $em->createQuery( 'DELETE FROM jsPowerAdmin\WebBundle\Entity\Records record WHERE record.domainId = :domain_id' );
+        $query->setParameter( "domain_id", $domainId );
+        $query->getResult();
+
+        // Delete zone
         $em->remove( $zones[0] );
         $em->flush();
 

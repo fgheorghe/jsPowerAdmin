@@ -561,6 +561,10 @@ zones.prototype.createAddSlaveZoneWindow = function() {
                                 }
                                 ,{
                                         text: 'Close'
+                                        ,handler: function() {
+                                                // Close window
+                                                this.addSlaveZoneWindow.close();
+                                        }.bind( this )
                                 }
                         ]
                 } )
