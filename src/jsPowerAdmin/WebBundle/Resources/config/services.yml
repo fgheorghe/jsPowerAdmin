@@ -43,7 +43,8 @@ parameters:
                 ttl: 86400
         # NOTE: The "production" user interface version is loading Ext JS from a CDN. Configurable here, to allow for easy version updates.
         extjs_cdn_url: http://cdn.sencha.io/ext-4.2.0-gpl/ext-all.js
-
+        # Date format, used by the UI.
+        date_format: 'd/M/y H:i:s'
 services:
 #    js_power_admin_web.example:
 #        class: %js_power_admin_web.example.class%

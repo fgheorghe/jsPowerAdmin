@@ -58,6 +58,8 @@ class RecordsController extends Controller
         $record->setContent( $content );
         $record->setPrio( $priority );
         $record->setTtl( $ttl );
+        $changeDate = time();
+        $record->setChangeDate( $changeDate );
 
         // Save
         // TODO: Add cache handling?!
@@ -66,7 +68,14 @@ class RecordsController extends Controller
         $em->flush();
 
         // TODO: Return 404 if not found.
-        return Output::format( array() );
+        return Output::format( array(
+                "name" => $name
+                ,"type" => $type
+                ,"content" => $content
+                ,"prio" => $priority
+                ,"ttl" => $ttl
+                ,"changeDate" => $changeDate
+        ) );
     }
 
     public function postAction( $domainId ) {
@@ -94,6 +103,8 @@ class RecordsController extends Controller
         $record->setPrio( $priority );
         $record->setTtl( $ttl );
         $record->setDomain( $zones[0] );
+        $changeDate = time();
+        $record->setChangeDate( $changeDate );
 
         // Save
         // TODO: Add cache handling?!
@@ -107,6 +118,7 @@ class RecordsController extends Controller
                 ,"content" => $content
                 ,"prio" => $priority
                 ,"ttl" => $ttl
+                ,"changeDate" => $changeDate
         ) );
     }
 

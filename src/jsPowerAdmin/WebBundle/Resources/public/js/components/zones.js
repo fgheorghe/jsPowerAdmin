@@ -119,6 +119,7 @@ zones.prototype.createZoneRecordGrid = function() {
                         ,{ name: 'content', type: 'string' }
                         ,{ name: 'prio', type: 'int' }
                         ,{ name: 'ttl', type: 'int' }
+                        ,{ name: 'changeDate', type: 'string' }
                 ]
         } );
 
@@ -160,6 +161,12 @@ zones.prototype.createZoneRecordGrid = function() {
                                         return request;
                                 }.bind( this )
                         }
+                        ,afterRequest: function( request, success ) {
+                                if ( success === true && request.method === "PUT" ) {
+                                       // Reload records grid.
+                                       this.zoneRecordGridPanel.getStore().load();
+                                }
+                        }.bind( this )
                 }
         } );
 
@@ -214,6 +221,17 @@ zones.prototype.createZoneRecordGrid = function() {
                                         ,maxValue: 86400
                                 }
                         }
+                        ,{ text: 'Change Date', width: 140, dataIndex: 'changeDate', renderer: function( value ) {
+                                try {
+                                        var date = new Date( value * 1000 ); // Create date
+
+                                        // Format
+                                        return Ext.Date.format( date, config.date_format );
+                                } catch ( ex ) {
+                                        // Date may be null.
+                                        return "";
+                                }
+                        }.bind( this ) }
                 ]
                 ,listeners: {
                         itemclick: this.zoneRecordGridPanelItemClickListener.bind( this )
